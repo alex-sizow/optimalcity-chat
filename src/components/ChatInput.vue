@@ -1,10 +1,28 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const emits = defineEmits(['update:value', 'click']);
+const props = defineProps({
+	value: { type: String },
+});
+
+const updateValue = (event: string) => {
+	emits('update:value', event.target.value);
+};
+
+const clickOnButton = () => {
+	emits('click');
+};
+</script>
 
 <template>
 	<input
+		placeholder="Введите текст"
 		type="text"
-		class="input" />
-	<button class="button">
+		class="input"
+		:value="value"
+		@input="updateValue($event)" />
+	<button
+		class="button"
+		@click="clickOnButton">
 		<svg
 			width="33"
 			height="33"

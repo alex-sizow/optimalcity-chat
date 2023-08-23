@@ -1,7 +1,8 @@
 <script setup lang="ts">
 const props = defineProps({
 	type: { type: String, required: true },
-	bar: Number,
+	text: { type: String, required: true },
+	first: { type: Boolean, default: true },
 });
 </script>
 
@@ -9,7 +10,9 @@ const props = defineProps({
 	<div
 		v-if="type === 'robot'"
 		class="bot-message">
-		<div class="avatar">
+		<div
+			class="avatar"
+			v-if="first">
 			<div class="avatar__icon">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -97,7 +100,9 @@ const props = defineProps({
 	<div
 		v-else
 		class="answer-message">
-		<div class="avatar">
+		<div
+			class="avatar"
+			v-if="first">
 			<span class="avatar__description">You</span>
 			<div class="avatar__icon">
 				<svg
@@ -173,12 +178,7 @@ const props = defineProps({
 		</div>
 		<div class="answer-message__items">
 			<div style="--n: 53">
-				Lorem ipsum dolor sit amet consectetur adipisicing
-				elit. Nisi, magnam?
-			</div>
-			<div style="--n: 53">
-				Lorem ipsum dolor sit amet consectetur adipisicing
-				elit. Nisi, magnam?
+				{{ text }}
 			</div>
 		</div>
 	</div>
@@ -241,7 +241,7 @@ const props = defineProps({
 		align-items: center;
 		column-gap: 12px;
 		font-size: 18px;
-
+		margin-bottom: 10px;
 		&__icon {
 			width: 33px;
 			height: 33px;
@@ -261,7 +261,7 @@ const props = defineProps({
 		flex-direction: column;
 		gap: 5px;
 		animation: fadeIn 4s;
-		margin: 10px -25px;
+		margin: 0px -25px;
 		div {
 			font-family: monospace;
 			font-weight: 600;

@@ -4,15 +4,19 @@ import { ref } from 'vue';
 import ChatInput from './ChatInput.vue';
 import ChatMessage from './ChatMessage.vue';
 
-const props = defineProps({
-	foo: { type: String, required: true },
-	bar: Number,
-});
+const messages: any = ref([{ type: 'robot' }]);
 
-const messages: Array = ref([
-	{ type: 'robot' },
-	{ type: 'you' },
-]);
+const inputField = ref('');
+
+const pushMessage = () => {
+	messages.value.push({
+		type: 'you',
+		text: inputField.value,
+		first:
+			messages.value.at(-1).type === 'you' ? false : true,
+	});
+	inputField.value = '';
+};
 </script>
 
 <template>
@@ -21,10 +25,15 @@ const messages: Array = ref([
 			<chat-message
 				v-for="(message, index) in messages"
 				:key="index"
-				:type="message.type" />
+				:type="message.type"
+				:text="message.text"
+				:first="message.first" />
 		</div>
 		<div class="chat__input">
-			<chat-input />
+			<chat-input
+				:value="inputField"
+				v-model:value="inputField"
+				@click="pushMessage" />
 		</div>
 	</div>
 </template>

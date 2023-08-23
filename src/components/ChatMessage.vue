@@ -88,12 +88,7 @@ const props = defineProps({
 		</div>
 		<div class="bot-message__items">
 			<div style="--n: 53">
-				Lorem ipsum dolor sit amet consectetur adipisicing
-				elit. Nisi, magnam?
-			</div>
-			<div style="--n: 53">
-				Lorem ipsum dolor sit amet consectetur adipisicing
-				elit. Nisi, magnam?
+				{{ text }}
 			</div>
 		</div>
 	</div>
@@ -194,7 +189,7 @@ const props = defineProps({
 		align-items: center;
 		column-gap: 12px;
 		font-size: 18px;
-
+		margin-bottom: 10px;
 		&__icon {
 			width: 33px;
 			height: 33px;
@@ -212,7 +207,7 @@ const props = defineProps({
 		flex-direction: column;
 		gap: 5px;
 		animation: fadeIn 4s;
-		margin: 10px 0 0 28px;
+		margin: 0px 0 0 28px;
 		div {
 			font-family: monospace;
 			font-weight: 600;

@@ -4,7 +4,18 @@ import { ref } from 'vue';
 import ChatInput from './ChatInput.vue';
 import ChatMessage from './ChatMessage.vue';
 
-const messages: any = ref([{ type: 'robot' }]);
+const messages: any = ref([
+	{
+		type: 'robot',
+		text: 'Привет, я утка, очень умная утка!',
+		first: true,
+	},
+	{
+		type: 'robot',
+		text: 'Отвечай на мои вопросы чётко, лысая обезьяна!',
+		first: false,
+	},
+]);
 
 const inputField = ref('');
 

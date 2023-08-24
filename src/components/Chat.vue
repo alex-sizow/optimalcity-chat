@@ -2,6 +2,7 @@
 import type { Ref } from 'vue';
 import { ref } from 'vue';
 
+import ChatButton from './ChatButton.vue';
 import ChatInput from './ChatInput.vue';
 import ChatMessage from './ChatMessage.vue';
 
@@ -13,19 +14,41 @@ const messages: Ref = ref([
 	},
 	{
 		type: 'robot',
-		text: 'Отвечай на мои вопросы чётко, лысая обезьяна!',
+		text: 'Как тебе помочь?',
 		first: false,
 	},
 ]);
 
 const inputField = ref('');
+const buttons = ref(false);
+
+setTimeout(() => {
+	buttons.value = true;
+}, 1800);
 
 const answerMessage = (text: string) => {
+	const currentDate = new Date();
+
+	const hours = currentDate.getHours();
+	const minutes = currentDate.getMinutes();
+
 	setTimeout(() => {
 		if (/[a-zA-Z]/.test(text)) {
 			messages.value.push({
 				type: 'robot',
 				text: 'Пиши на русском( Я потом выучу английский!',
+				first: true,
+			});
+		} else if (text === 'Сколько время?') {
+			messages.value.push({
+				type: 'robot',
+				text: `Сейчас: ${hours}:${minutes}`,
+				first: true,
+			});
+		} else if (text.includes('кря')) {
+			messages.value.push({
+				type: 'robot',
+				text: `Кря! Кря! Кря!`,
 				first: true,
 			});
 		} else if (messages.value.length > 4) {
@@ -43,16 +66,20 @@ const answerMessage = (text: string) => {
 		}
 		$refs.scrollToMe();
 	}, 1500);
+	setTimeout(() => {
+		buttons.value = true;
+	}, 1800);
 };
 
-const pushMessage = () => {
+const pushMessage = (input: string) => {
+	buttons.value = false;
 	messages.value.push({
 		type: 'you',
-		text: inputField.value,
+		text: input,
 		first:
 			messages.value.at(-1).type === 'you' ? false : true,
 	});
-	answerMessage(inputField.value);
+	answerMessage(input);
 	inputField.value = '';
 };
 </script>
@@ -68,11 +95,21 @@ const pushMessage = () => {
 				:first="message.first"
 				:ref="`${index}`" />
 		</div>
+		<div
+			v-if="buttons"
+			class="chat__buttons">
+			<chat-button
+				value="Скажи кря!"
+				@click="pushMessage('Скажи кря!')" />
+			<chat-button
+				value="Сколько время?"
+				@click="pushMessage('Сколько время?')" />
+		</div>
 		<div class="chat__input">
 			<chat-input
 				:value="inputField"
 				v-model:value="inputField"
-				@click="pushMessage" />
+				@click="pushMessage(inputField)" />
 		</div>
 	</div>
 </template>
@@ -81,7 +118,7 @@ const pushMessage = () => {
 .chat {
 	position: relative;
 	width: 380px;
-	height: 540px;
+	height: 600px;
 	background: white;
 	box-shadow: 18px 18px 36px #d18c16, -18px -18px 36px #ffb61c;
 	border-radius: 28px;
@@ -93,7 +130,7 @@ const pushMessage = () => {
 
 	&__area {
 		width: 99%;
-		height: calc(100% - 25px);
+		height: calc(100% - 45px);
 		border-radius: 10px;
 		overflow: auto;
 		display: flex;
@@ -233,12 +270,21 @@ const pushMessage = () => {
 		padding: 0 10px;
 		display: flex;
 		justify-content: space-around;
-		&_button {
-			width: 44px;
+	}
+
+	&__buttons {
+		z-index: 10;
+		position: absolute;
+		bottom: 76px;
+		display: flex;
+		gap: 10px;
+		.button {
 			height: 44px;
 			border-radius: 34px;
 			background: linear-gradient(145deg, #ffc349, #dfa43d);
 			box-shadow: 6px 6px 12px #dedede, -6px -6px 12px #ffffff;
+			padding: 10px;
+			color: white;
 			display: flex;
 			justify-content: center;
 			align-items: center;

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 const emits = defineEmits(['update:value', 'click']);
-const props = defineProps({
+defineProps({
 	value: { type: String },
 });
 
-const updateValue = (event: string) => {
+const updateValue = (event: any) => {
 	emits('update:value', event.target.value);
 };
 

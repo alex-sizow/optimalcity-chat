@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import type { Ref } from 'vue';
 import { ref } from 'vue';
 
 import ChatInput from './ChatInput.vue';
 import ChatMessage from './ChatMessage.vue';
 
-const messages: any = ref([
+const messages: Ref = ref([
 	{
 		type: 'robot',
 		text: 'Привет, я утка, очень умная утка!',
@@ -19,6 +20,31 @@ const messages: any = ref([
 
 const inputField = ref('');
 
+const answerMessage = (text: string) => {
+	setTimeout(() => {
+		if (/[a-zA-Z]/.test(text)) {
+			messages.value.push({
+				type: 'robot',
+				text: 'Пиши на русском( Я потом выучу английский!',
+				first: true,
+			});
+		} else if (messages.value.length > 4) {
+			messages.value.push({
+				type: 'robot',
+				text: 'Я устала( Ты скучный!',
+				first: true,
+			});
+		} else {
+			messages.value.push({
+				type: 'robot',
+				text: 'Мне это не интересно. Тебе нравятся круассаны?',
+				first: true,
+			});
+		}
+		$refs.scrollToMe();
+	}, 1500);
+};
+
 const pushMessage = () => {
 	messages.value.push({
 		type: 'you',
@@ -26,6 +52,7 @@ const pushMessage = () => {
 		first:
 			messages.value.at(-1).type === 'you' ? false : true,
 	});
+	answerMessage(inputField.value);
 	inputField.value = '';
 };
 </script>
@@ -38,7 +65,8 @@ const pushMessage = () => {
 				:key="index"
 				:type="message.type"
 				:text="message.text"
-				:first="message.first" />
+				:first="message.first"
+				:ref="`${index}`" />
 		</div>
 		<div class="chat__input">
 			<chat-input
@@ -52,8 +80,8 @@ const pushMessage = () => {
 <style scoped lang="scss">
 .chat {
 	position: relative;
-	width: 370px;
-	height: 530px;
+	width: 380px;
+	height: 540px;
 	background: white;
 	box-shadow: 18px 18px 36px #d18c16, -18px -18px 36px #ffb61c;
 	border-radius: 28px;
@@ -61,7 +89,7 @@ const pushMessage = () => {
 	align-items: center;
 	flex-direction: column;
 	gap: 10px;
-	padding-top: 12px;
+	padding-top: 20px;
 
 	&__area {
 		width: 99%;
@@ -72,7 +100,8 @@ const pushMessage = () => {
 		flex-direction: column;
 		gap: 10px;
 		padding: 10px;
-
+		scrollbar-gutter: stable;
+		overscroll-behavior-y: none;
 		.bot-message {
 			display: flex;
 			justify-content: right;
@@ -171,6 +200,30 @@ const pushMessage = () => {
 				}
 			}
 		}
+
+		::-webkit-scrollbar {
+			width: 10px;
+		}
+
+		::-webkit-scrollbar-track {
+			background-color: darkgrey;
+		}
+
+		::-webkit-scrollbar-thumb {
+			box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+		}
+	}
+	&__area::-webkit-scrollbar {
+		width: 5px;
+	}
+
+	::-webkit-scrollbar-track {
+		background-color: rgb(255, 255, 255);
+	}
+
+	::-webkit-scrollbar-thumb {
+		border-radius: 3px;
+		box-shadow: inset 0 0 6px rgba(255, 140, 0, 0.3);
 	}
 
 	&__input {

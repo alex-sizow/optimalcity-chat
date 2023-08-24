@@ -64,7 +64,6 @@ const answerMessage = (text: string) => {
 				first: true,
 			});
 		}
-		$refs.scrollToMe();
 	}, 1500);
 	setTimeout(() => {
 		buttons.value = true;

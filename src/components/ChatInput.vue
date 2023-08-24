@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const emits = defineEmits(['update:value', 'click']);
 defineProps({
-	value: { type: String },
+	text: { type: String },
 });
 
 const updateValue = (event: any) => {
@@ -18,7 +18,7 @@ const clickOnButton = () => {
 		placeholder="Введите текст"
 		type="text"
 		class="input"
-		:value="value"
+		:value="text"
 		@input="updateValue($event)" />
 	<button
 		class="button"

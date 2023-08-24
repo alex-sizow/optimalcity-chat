@@ -106,7 +106,7 @@ const pushMessage = (input: string) => {
 		</div>
 		<div class="chat__input">
 			<chat-input
-				:value="inputField"
+				:text="inputField"
 				v-model:value="inputField"
 				@click="pushMessage(inputField)" />
 		</div>
